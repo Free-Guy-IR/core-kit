@@ -6,7 +6,7 @@
       "name": "@pasarguard/core-kit",
       "dependencies": {
         "@pasarguard/wireguard-config-kit": "0.1.0",
-        "@pasarguard/xray-config-kit": "0.3.4",
+        "@pasarguard/xray-config-kit": "0.3.5",
       },
       "devDependencies": {
         "@types/bun": "^1.3.9",
@@ -23,7 +23,7 @@
 
     "@pasarguard/wireguard-config-kit": ["@pasarguard/wireguard-config-kit@0.1.0", "", { "dependencies": { "@stablelib/x25519": "^2.0.1", "zod": "^3.25.76" } }, "sha512-vC4ULRfrgsN+W9mFLHFkr74G+6yPmMtxj1/1ZjIwulHPeQ5qHVGA0ed1vSMxL9f722rmV3jj/eMeRQCasGJsrw=="],
 
-    "@pasarguard/xray-config-kit": ["@pasarguard/xray-config-kit@0.3.4", "", { "dependencies": { "@noble/post-quantum": "^0.5.4", "@stablelib/x25519": "^2.0.1", "mlkem": "^2.7.0", "zod": "^3.23.8", "zod-to-json-schema": "^3.25.2" } }, "sha512-oDdPyNUrfnsGBSVw7KsTjWdZs0aRz6wRDRk7+G1zimIp6KQvYkZwDLjVwJnh+Brf8twxBxKsZUxegOx8e7csug=="],
+    "@pasarguard/xray-config-kit": ["@pasarguard/xray-config-kit@0.3.5", "", { "dependencies": { "@noble/post-quantum": "^0.5.4", "@stablelib/x25519": "^2.0.1", "mlkem": "^2.7.0", "zod": "^3.23.8", "zod-to-json-schema": "^3.25.2" } }, "sha512-HCNcILB6hSIeaLKnjIpI0WsQ6ikwDU+lAavuXmNgzG4Inx8OlkNjKeWltJ1+iXeCmch8yieFPjDjdO1MXfLZkQ=="],
 
     "@stablelib/binary": ["@stablelib/binary@2.0.1", "", { "dependencies": { "@stablelib/int": "^2.0.1" } }, "sha512-U9iAO8lXgEDONsA0zPPSgcf3HUBNAqHiJmSHgZz62OvC3Hi2Bhc5kTnQ3S1/L+sthDTHtCMhcEiklmIly6uQ3w=="],
 
