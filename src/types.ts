@@ -1,4 +1,4 @@
-export type CoreKind = "xray" | "wg";
+export type CoreKind = "xray" | "wg" | "singbox";
 
 export type CoreKitValidationIssue = {
   readonly code: string;

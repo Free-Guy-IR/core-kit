@@ -3,6 +3,7 @@ import {
   coreKits,
   createCoreConfigTemplate,
   getCoreKit,
+  singbox,
   supportedCoreKinds,
   validateCoreConfig,
   wireguard,
@@ -11,11 +12,13 @@ import {
 
 describe("core registry", () => {
   test("exposes stable supported core kinds", () => {
-    expect(supportedCoreKinds).toEqual(["xray", "wg"]);
+    expect(supportedCoreKinds).toEqual(["xray", "wg", "singbox"]);
     expect(coreKits.xray.kind).toBe("xray");
     expect(coreKits.wg.kind).toBe("wg");
+    expect(coreKits.singbox.kind).toBe("singbox");
     expect(getCoreKit("xray").label).toBe("Xray");
     expect(getCoreKit("wg").label).toBe("WireGuard");
+    expect(getCoreKit("singbox").label).toBe("Sing-box");
   });
 
   test("creates and validates default Xray JSON through the facade", () => {
@@ -73,9 +76,34 @@ describe("core registry", () => {
     }
   });
 
+  test("creates and validates default sing-box (Hysteria2) JSON through the facade", () => {
+    const template = createCoreConfigTemplate("singbox");
+    expect(template.kind).toBe("singbox");
+
+    const parsed = JSON.parse(template.configJson) as { inbounds?: unknown[]; outbounds?: unknown[] };
+    expect(Array.isArray(parsed.inbounds)).toBe(true);
+    expect(Array.isArray(parsed.outbounds)).toBe(true);
+
+    const result = validateCoreConfig("singbox", template.configJson);
+    expect(result.ok).toBe(true);
+  });
+
+  test("delegates sing-box validation failures (hysteria2 requires tls.enabled)", () => {
+    const result = validateCoreConfig("singbox", {
+      inbounds: [{ type: "hysteria2", tag: "a", listen_port: 8443, tls: { enabled: false } }],
+      outbounds: [{ type: "direct" }]
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.issues.length).toBeGreaterThan(0);
+      expect(result.issues[0]?.code).toMatch(/^SB_/);
+    }
+  });
+
   test("re-exports underlying browser-safe namespaces", () => {
     expect(typeof xray.createDefaultXrayCoreConfigJson).toBe("function");
     expect(typeof wireguard.generateWireGuardKeyPair).toBe("function");
+    expect(typeof singbox.createDefaultSingBoxCoreDraft).toBe("function");
   });
 });
 

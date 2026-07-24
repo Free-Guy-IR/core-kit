@@ -28,6 +28,10 @@
     "./wireguard": {
       "types": "./dist/wireguard.d.ts",
       "default": "./dist/wireguard.js"
+    },
+    "./singbox": {
+      "types": "./dist/singbox.d.ts",
+      "default": "./dist/singbox.js"
     }
   },
   "scripts": {
@@ -36,7 +40,8 @@
     "test": "bun test"
   },
   "dependencies": {
-    "@pasarguard/wireguard-config-kit": "0.1.0",
+    "@pasarguard/wireguard-config-kit": "file:../wireguard-config-kit",
+    "@pasarguard/singbox-config-kit": "file:../singbox-config-kit",
     "@pasarguard/xray-config-kit": "0.3.5"
   },
   "devDependencies": {
