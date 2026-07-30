@@ -1,4 +1,4 @@
-export type CoreKind = "xray" | "wg" | "singbox";
+export type CoreKind = "xray" | "wg" | "singbox" | "openvpn";
 
 export type CoreKitValidationIssue = {
   readonly code: string;
@@ -30,6 +30,10 @@ export type CoreKitCapabilities = {
   readonly keyGeneration: boolean;
   readonly formDrafts: boolean;
   readonly clientLinks: boolean;
+  /** True when a single core config can hold more than one independent listener/instance (e.g. OpenVPN's instances list). Optional so existing kits are unaffected. */
+  readonly supportsMultipleInstances?: boolean;
+  /** True when the core config needs server-generated PKI material before it can be saved (e.g. OpenVPN's CA/cert/key/tls-crypt bundle). Optional so existing kits are unaffected. */
+  readonly requiresServerPKI?: boolean;
 };
 
 export type CoreKitValidationOptions = {

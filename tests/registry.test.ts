@@ -3,6 +3,7 @@ import {
   coreKits,
   createCoreConfigTemplate,
   getCoreKit,
+  openvpn,
   singbox,
   supportedCoreKinds,
   validateCoreConfig,
@@ -12,13 +13,20 @@ import {
 
 describe("core registry", () => {
   test("exposes stable supported core kinds", () => {
-    expect(supportedCoreKinds).toEqual(["xray", "wg", "singbox"]);
+    expect(supportedCoreKinds).toEqual(["xray", "wg", "singbox", "openvpn"]);
     expect(coreKits.xray.kind).toBe("xray");
     expect(coreKits.wg.kind).toBe("wg");
     expect(coreKits.singbox.kind).toBe("singbox");
+    expect(coreKits.openvpn.kind).toBe("openvpn");
     expect(getCoreKit("xray").label).toBe("Xray");
     expect(getCoreKit("wg").label).toBe("WireGuard");
     expect(getCoreKit("singbox").label).toBe("Sing-box");
+    expect(getCoreKit("openvpn").label).toBe("OpenVPN");
+  });
+
+  test("OpenVPN kit capabilities flag multi-instance + server PKI", () => {
+    expect(coreKits.openvpn.capabilities.supportsMultipleInstances).toBe(true);
+    expect(coreKits.openvpn.capabilities.requiresServerPKI).toBe(true);
   });
 
   test("creates and validates default Xray JSON through the facade", () => {
@@ -100,10 +108,49 @@ describe("core registry", () => {
     }
   });
 
+  test("creates and validates default OpenVPN JSON through the facade", () => {
+    const template = createCoreConfigTemplate("openvpn");
+    expect(template.kind).toBe("openvpn");
+
+    const parsed = JSON.parse(template.configJson) as { instances?: unknown[]; pki?: unknown };
+    expect(Array.isArray(parsed.instances)).toBe(true);
+    expect(parsed.pki).toBeTruthy();
+
+    // The default template's pki is intentionally empty (server-generated), so it does not
+    // validate as a saveable config until PKI has been generated - this mirrors the panel
+    // rejecting an incomplete pki section.
+    const result = validateCoreConfig("openvpn", template.configJson);
+    expect(result.ok).toBe(false);
+  });
+
+  test("delegates OpenVPN validation failures (duplicate protocol/port pair)", () => {
+    const result = validateCoreConfig("openvpn", {
+      instances: [
+        { tag: "a", protocol: "udp", port: 1194, network: "10.8.0.0/24" },
+        { tag: "b", protocol: "udp", port: 1194, network: "10.9.0.0/24" }
+      ],
+      pki: { ca_cert: "x", server_cert: "x", server_key: "x", tls_crypt_key: "x" }
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.issues.length).toBeGreaterThan(0);
+      expect(result.issues[0]?.code).toMatch(/^OV_/);
+    }
+  });
+
+  test("delegates OpenVPN validation success with a complete config", () => {
+    const result = validateCoreConfig("openvpn", {
+      instances: [{ tag: "udp-main", protocol: "udp", port: 1194, network: "10.8.0.0/24" }],
+      pki: { ca_cert: "x", server_cert: "x", server_key: "x", tls_crypt_key: "x" }
+    });
+    expect(result.ok).toBe(true);
+  });
+
   test("re-exports underlying browser-safe namespaces", () => {
     expect(typeof xray.createDefaultXrayCoreConfigJson).toBe("function");
     expect(typeof wireguard.generateWireGuardKeyPair).toBe("function");
     expect(typeof singbox.createDefaultSingBoxCoreDraft).toBe("function");
+    expect(typeof openvpn.createDefaultOpenVPNCoreDraft).toBe("function");
   });
 });
 

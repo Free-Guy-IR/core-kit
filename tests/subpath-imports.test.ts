@@ -7,12 +7,14 @@ describe("package subpaths", () => {
     const xrayGenerators = await import("@pasarguard/core-kit/xray/generators");
     const wireguard = await import("@pasarguard/core-kit/wireguard");
     const singbox = await import("@pasarguard/core-kit/singbox");
+    const openvpn = await import("@pasarguard/core-kit/openvpn");
 
     expect(typeof root.createCoreConfigTemplate).toBe("function");
     expect(typeof xray.validateStrictXrayConfig).toBe("function");
     expect(typeof xrayGenerators.createDefaultXrayCoreConfigJson).toBe("function");
     expect(typeof wireguard.generateWireGuardKeyPair).toBe("function");
     expect(typeof singbox.createDefaultSingBoxCoreDraft).toBe("function");
+    expect(typeof openvpn.createDefaultOpenVPNCoreDraft).toBe("function");
   });
 });
 

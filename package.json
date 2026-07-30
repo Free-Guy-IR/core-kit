@@ -32,6 +32,10 @@
     "./singbox": {
       "types": "./dist/singbox.d.ts",
       "default": "./dist/singbox.js"
+    },
+    "./openvpn": {
+      "types": "./dist/openvpn.d.ts",
+      "default": "./dist/openvpn.js"
     }
   },
   "scripts": {
@@ -42,6 +46,7 @@
   "dependencies": {
     "@pasarguard/wireguard-config-kit": "file:../wireguard-config-kit",
     "@pasarguard/singbox-config-kit": "file:../singbox-config-kit",
+    "@pasarguard/openvpn-config-kit": "file:../openvpn-config-kit",
     "@pasarguard/xray-config-kit": "0.3.5"
   },
   "devDependencies": {
