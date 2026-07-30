@@ -1,5 +1,7 @@
 # PasarGuard Core Kit
 
+> Note: This is the [Free-Guy-IR](https://github.com/Free-Guy-IR) fork of the original [PasarGuard core-kit](https://github.com/PasarGuard/core-kit), registering sing-box and OpenVPN core kits alongside Xray/WireGuard.
+
 Browser-safe TypeScript registry facade for PasarGuard core configuration packages.
 
 ## Package
