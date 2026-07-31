@@ -1,3 +1,4 @@
+import { mtprotoKit } from "./mtproto-kit.js";
 import { openVPNKit } from "./openvpn-kit.js";
 import { singBoxKit } from "./singbox-kit.js";
 import { wireGuardKit } from "./wireguard-kit.js";
@@ -20,13 +21,14 @@ export type {
   CoreKitValidationResult
 } from "./types.js";
 
-export const supportedCoreKinds = ["xray", "wg", "singbox", "openvpn"] as const satisfies readonly CoreKind[];
+export const supportedCoreKinds = ["xray", "wg", "singbox", "openvpn", "mtproto"] as const satisfies readonly CoreKind[];
 
 export const coreKits = {
   xray: xrayKit,
   wg: wireGuardKit,
   singbox: singBoxKit,
-  openvpn: openVPNKit
+  openvpn: openVPNKit,
+  mtproto: mtprotoKit
 } as const satisfies Record<CoreKind, CoreKit>;
 
 export function getCoreKit(kind: CoreKind): CoreKit {
@@ -53,4 +55,5 @@ export * as xray from "@pasarguard/xray-config-kit";
 export * as wireguard from "@pasarguard/wireguard-config-kit";
 export * as singbox from "@pasarguard/singbox-config-kit";
 export * as openvpn from "@pasarguard/openvpn-config-kit";
+export * as mtproto from "@pasarguard/mtproto-config-kit";
 

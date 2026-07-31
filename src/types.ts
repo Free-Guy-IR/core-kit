@@ -1,4 +1,4 @@
-export type CoreKind = "xray" | "wg" | "singbox" | "openvpn";
+export type CoreKind = "xray" | "wg" | "singbox" | "openvpn" | "mtproto";
 
 export type CoreKitValidationIssue = {
   readonly code: string;
