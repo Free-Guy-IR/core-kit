@@ -39,15 +39,16 @@
     }
   },
   "scripts": {
+    "prepare": "tsc -p tsconfig.json",
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "bun test"
   },
   "dependencies": {
-    "@pasarguard/wireguard-config-kit": "file:../wireguard-config-kit",
-    "@pasarguard/singbox-config-kit": "file:../singbox-config-kit",
-    "@pasarguard/openvpn-config-kit": "file:../openvpn-config-kit",
-    "@pasarguard/mtproto-config-kit": "file:../mtproto-config-kit",
+    "@pasarguard/wireguard-config-kit": "github:Free-Guy-IR/wireguard-config-kit#main",
+    "@pasarguard/singbox-config-kit": "github:Free-Guy-IR/singbox-config-kit#main",
+    "@pasarguard/openvpn-config-kit": "github:Free-Guy-IR/openvpn-config-kit#main",
+    "@pasarguard/mtproto-config-kit": "github:Free-Guy-IR/mtproto-config-kit#main",
     "@pasarguard/xray-config-kit": "0.3.7"
   },
   "devDependencies": {
