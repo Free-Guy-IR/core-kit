@@ -5,10 +5,10 @@
     "": {
       "name": "@pasarguard/core-kit",
       "dependencies": {
-        "@pasarguard/mtproto-config-kit": "file:../mtproto-config-kit",
-        "@pasarguard/openvpn-config-kit": "file:../openvpn-config-kit",
-        "@pasarguard/singbox-config-kit": "file:../singbox-config-kit",
-        "@pasarguard/wireguard-config-kit": "file:../wireguard-config-kit",
+        "@pasarguard/mtproto-config-kit": "github:Free-Guy-IR/mtproto-config-kit#main",
+        "@pasarguard/openvpn-config-kit": "github:Free-Guy-IR/openvpn-config-kit#main",
+        "@pasarguard/singbox-config-kit": "github:Free-Guy-IR/singbox-config-kit#main",
+        "@pasarguard/wireguard-config-kit": "github:Free-Guy-IR/wireguard-config-kit#main",
         "@pasarguard/xray-config-kit": "0.3.7",
       },
       "devDependencies": {
@@ -24,13 +24,13 @@
 
     "@noble/post-quantum": ["@noble/post-quantum@0.5.4", "", { "dependencies": { "@noble/curves": "~2.0.0", "@noble/hashes": "~2.0.0" } }, "sha512-leww0zzIirrvwaYMPI9fj6aRIlA/c6Y0/lifQQ1YOOyHEr0MNH3yYpjXeiVG+tWdPps4XxGclFWX2INPO3Yo5w=="],
 
-    "@pasarguard/mtproto-config-kit": ["@pasarguard/mtproto-config-kit@file:../mtproto-config-kit", { "dependencies": { "zod": "^3.25.76" }, "devDependencies": { "@types/bun": "^1.3.9", "typescript": "^5.5.4" } }],
+    "@pasarguard/mtproto-config-kit": ["@pasarguard/mtproto-config-kit@github:Free-Guy-IR/mtproto-config-kit#efc60e7", { "dependencies": { "zod": "^3.25.76" } }, "Free-Guy-IR-mtproto-config-kit-efc60e7", "sha512-vEJ2eusU5yQcFGGih1rWD/ddSqDEczgMG2NNiOrm35Z48Jgu7MomUUwqy1EsmiUj7bw2aZWlhVPI7P/V+wFKag=="],
 
-    "@pasarguard/openvpn-config-kit": ["@pasarguard/openvpn-config-kit@file:../openvpn-config-kit", { "dependencies": { "zod": "^3.25.76" }, "devDependencies": { "@types/bun": "^1.3.9", "typescript": "^5.5.4" } }],
+    "@pasarguard/openvpn-config-kit": ["@pasarguard/openvpn-config-kit@github:Free-Guy-IR/openvpn-config-kit#15ec50c", { "dependencies": { "zod": "^3.25.76" } }, "Free-Guy-IR-openvpn-config-kit-15ec50c", "sha512-rbfdB172u0YutI8WTnzRZQ3FiPaamC3ZUkAL32UDE5lCpSLeJkMl8fancmZYmhAa2qaPHhXNU5f6PzjWgJ2RHA=="],
 
-    "@pasarguard/singbox-config-kit": ["@pasarguard/singbox-config-kit@file:../singbox-config-kit", { "dependencies": { "zod": "^3.25.76" }, "devDependencies": { "@types/bun": "^1.3.9", "typescript": "^5.5.4" } }],
+    "@pasarguard/singbox-config-kit": ["@pasarguard/singbox-config-kit@github:Free-Guy-IR/singbox-config-kit#f96592e", { "dependencies": { "zod": "^3.25.76" } }, "Free-Guy-IR-singbox-config-kit-f96592e", "sha512-ozBXL/ZH2QHdSQNsl5jSGl2SnCmxzy6SkRuQDwdT12LgNNaSzwA7ON9fbABVk9l71ipnLo5cyZapXrimZC5n/g=="],
 
-    "@pasarguard/wireguard-config-kit": ["@pasarguard/wireguard-config-kit@file:../wireguard-config-kit", { "dependencies": { "@stablelib/x25519": "^2.0.1", "zod": "^3.25.76" }, "devDependencies": { "@types/bun": "^1.3.9", "typescript": "^5.5.4" } }],
+    "@pasarguard/wireguard-config-kit": ["@pasarguard/wireguard-config-kit@github:Free-Guy-IR/wireguard-config-kit#e55aff7", { "dependencies": { "@stablelib/x25519": "^2.0.1", "zod": "^3.25.76" } }, "Free-Guy-IR-wireguard-config-kit-e55aff7", "sha512-d13wCUhF0WC5ItYeL128hXNClYobuEqCOVyX7BFRtm1nFB39MhW8y6qqANMpAyDPUtP/nmNA4LB5TXV4Hbis0Q=="],
 
     "@pasarguard/xray-config-kit": ["@pasarguard/xray-config-kit@0.3.7", "", { "dependencies": { "@noble/post-quantum": "^0.5.4", "@stablelib/x25519": "^2.0.1", "mlkem": "^2.7.0", "zod": "^3.23.8", "zod-to-json-schema": "^3.25.2" } }, "sha512-KxlrXE7ys/ZHRpn4tnCV3jaokoROV2MOTBof2/3HT/KhsHritEKGsd4SmAlDvTpVjIhiQdBBeYNLjcd7zAN+CQ=="],
 
