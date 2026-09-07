@@ -1,6 +1,6 @@
 {
   "name": "@pasarguard/core-kit",
-  "version": "0.2.7",
+  "version": "0.3.0",
   "description": "Browser-safe registry facade for PasarGuard core configuration kits.",
   "type": "module",
   "packageManager": "bun",
@@ -36,6 +36,10 @@
     "./openvpn": {
       "types": "./dist/openvpn.d.ts",
       "default": "./dist/openvpn.js"
+    },
+    "./l2tp": {
+      "types": "./dist/l2tp.d.ts",
+      "default": "./dist/l2tp.js"
     }
   },
   "scripts": {
@@ -48,6 +52,7 @@
     "@pasarguard/singbox-config-kit": "file:../singbox-config-kit",
     "@pasarguard/openvpn-config-kit": "file:../openvpn-config-kit",
     "@pasarguard/mtproto-config-kit": "file:../mtproto-config-kit",
+    "@pasarguard/l2tp-config-kit": "file:../l2tp-config-kit",
     "@pasarguard/xray-config-kit": "0.3.7"
   },
   "devDependencies": {

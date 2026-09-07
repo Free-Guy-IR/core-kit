@@ -8,6 +8,7 @@ describe("package subpaths", () => {
     const wireguard = await import("@pasarguard/core-kit/wireguard");
     const singbox = await import("@pasarguard/core-kit/singbox");
     const openvpn = await import("@pasarguard/core-kit/openvpn");
+    const l2tp = await import("@pasarguard/core-kit/l2tp");
 
     expect(typeof root.createCoreConfigTemplate).toBe("function");
     expect(typeof xray.validateStrictXrayConfig).toBe("function");
@@ -15,6 +16,7 @@ describe("package subpaths", () => {
     expect(typeof wireguard.generateWireGuardKeyPair).toBe("function");
     expect(typeof singbox.createDefaultSingBoxCoreDraft).toBe("function");
     expect(typeof openvpn.createDefaultOpenVPNCoreDraft).toBe("function");
+    expect(typeof l2tp.createDefaultL2TPCoreDraft).toBe("function");
   });
 });
 

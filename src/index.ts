@@ -1,3 +1,4 @@
+import { l2tpKit } from "./l2tp-kit.js";
 import { mtprotoKit } from "./mtproto-kit.js";
 import { openVPNKit } from "./openvpn-kit.js";
 import { singBoxKit } from "./singbox-kit.js";
@@ -21,14 +22,15 @@ export type {
   CoreKitValidationResult
 } from "./types.js";
 
-export const supportedCoreKinds = ["xray", "wg", "singbox", "openvpn", "mtproto"] as const satisfies readonly CoreKind[];
+export const supportedCoreKinds = ["xray", "wg", "singbox", "openvpn", "mtproto", "l2tp"] as const satisfies readonly CoreKind[];
 
 export const coreKits = {
   xray: xrayKit,
   wg: wireGuardKit,
   singbox: singBoxKit,
   openvpn: openVPNKit,
-  mtproto: mtprotoKit
+  mtproto: mtprotoKit,
+  l2tp: l2tpKit
 } as const satisfies Record<CoreKind, CoreKit>;
 
 export function getCoreKit(kind: CoreKind): CoreKit {
@@ -56,4 +58,5 @@ export * as wireguard from "@pasarguard/wireguard-config-kit";
 export * as singbox from "@pasarguard/singbox-config-kit";
 export * as openvpn from "@pasarguard/openvpn-config-kit";
 export * as mtproto from "@pasarguard/mtproto-config-kit";
+export * as l2tp from "@pasarguard/l2tp-config-kit";
 

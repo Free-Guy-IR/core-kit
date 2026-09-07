@@ -1,6 +1,6 @@
-import { createDefaultMTProtoCoreDraft, splitDomains, validateMTProtoCoreConfig } from "@pasarguard/mtproto-config-kit";
+import { createDefaultL2TPCoreDraft, rawL2TPCoreConfigFromDraft, validateL2TPCoreConfig } from "@pasarguard/l2tp-config-kit";
 import { parseConfigInput } from "./json.js";
-function mapMTProtoIssue(issue) {
+function mapL2TPIssue(issue) {
     return {
         code: issue.code,
         path: issue.path,
@@ -9,23 +9,20 @@ function mapMTProtoIssue(issue) {
     };
 }
 function createDefaultConfigJson() {
-    const draft = createDefaultMTProtoCoreDraft();
+    const draft = createDefaultL2TPCoreDraft();
     return {
-        kind: "mtproto",
-        configJson: JSON.stringify({
-            instances: draft.instances.map(i => ({
-                tag: i.tag,
-                port: i.port,
-                fake_tls_domain: splitDomains(i.fakeTlsDomains)[0] ?? ""
-            }))
-        }, null, 2)
+        kind: "l2tp",
+        configJson: JSON.stringify(rawL2TPCoreConfigFromDraft(draft), null, 2),
+        generated: {
+            l2tpPsk: draft.psk
+        }
     };
 }
 function validateConfig(input) {
     const parsed = parseConfigInput(input);
     if (!parsed.ok)
         return parsed;
-    const result = validateMTProtoCoreConfig(parsed.config);
+    const result = validateL2TPCoreConfig(parsed.config);
     if (result.ok) {
         return {
             ok: true,
@@ -35,23 +32,23 @@ function validateConfig(input) {
     }
     return {
         ok: false,
-        issues: result.issues.map(mapMTProtoIssue)
+        issues: result.issues.map(mapL2TPIssue)
     };
 }
-export const mtprotoKit = {
-    kind: "mtproto",
-    label: "MTProto",
+export const l2tpKit = {
+    kind: "l2tp",
+    label: "L2TP/IPsec",
     browserSafe: true,
     capabilities: {
         coreConfigTemplate: true,
         rawConfigValidation: true,
-        keyGeneration: false,
+        keyGeneration: true,
         formDrafts: true,
         clientLinks: false,
-        supportsMultipleInstances: true,
+        supportsMultipleInstances: false,
         requiresServerPKI: false
     },
     createDefaultConfigJson,
     validateConfig
 };
-//# sourceMappingURL=mtproto-kit.js.map
+//# sourceMappingURL=l2tp-kit.js.map

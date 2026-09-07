@@ -3,6 +3,8 @@ import {
   coreKits,
   createCoreConfigTemplate,
   getCoreKit,
+  l2tp,
+  mtproto,
   openvpn,
   singbox,
   supportedCoreKinds,
@@ -13,15 +15,54 @@ import {
 
 describe("core registry", () => {
   test("exposes stable supported core kinds", () => {
-    expect(supportedCoreKinds).toEqual(["xray", "wg", "singbox", "openvpn"]);
+    expect(supportedCoreKinds).toEqual(["xray", "wg", "singbox", "openvpn", "mtproto", "l2tp"]);
     expect(coreKits.xray.kind).toBe("xray");
     expect(coreKits.wg.kind).toBe("wg");
     expect(coreKits.singbox.kind).toBe("singbox");
     expect(coreKits.openvpn.kind).toBe("openvpn");
+    expect(coreKits.mtproto.kind).toBe("mtproto");
+    expect(coreKits.l2tp.kind).toBe("l2tp");
     expect(getCoreKit("xray").label).toBe("Xray");
     expect(getCoreKit("wg").label).toBe("WireGuard");
     expect(getCoreKit("singbox").label).toBe("Sing-box");
     expect(getCoreKit("openvpn").label).toBe("OpenVPN");
+    expect(getCoreKit("mtproto").label).toBe("MTProto");
+    expect(getCoreKit("l2tp").label).toBe("L2TP/IPsec");
+  });
+
+  test("L2TP kit capabilities flag a single instance with a generated key", () => {
+    expect(coreKits.l2tp.capabilities.supportsMultipleInstances).toBe(false);
+    expect(coreKits.l2tp.capabilities.requiresServerPKI).toBe(false);
+    expect(coreKits.l2tp.capabilities.keyGeneration).toBe(true);
+  });
+
+  test("creates the default L2TP JSON through the facade", () => {
+    const template = createCoreConfigTemplate("l2tp");
+    expect(template.kind).toBe("l2tp");
+    expect(typeof template.generated?.l2tpPsk).toBe("string");
+
+    const parsed = JSON.parse(template.configJson) as Record<string, unknown>;
+    expect(parsed.inbound_tag).toBe("L2TP");
+    expect(parsed.pool).toBe("10.10.10.0/24");
+    expect(parsed.server_addr).toBe("");
+
+    expect(validateCoreConfig("l2tp", template.configJson).ok).toBe(false);
+    expect(validateCoreConfig("l2tp", { ...parsed, server_addr: "vpn.example.com" }).ok).toBe(true);
+  });
+
+  test("delegates L2TP validation failures", () => {
+    const result = validateCoreConfig("l2tp", {
+      inbound_tag: "L2TP",
+      server_addr: "vpn.example.com",
+      psk: "S3cretPsk-1234",
+      pool: "10.10.10.0/30"
+    });
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.issues.length).toBeGreaterThan(0);
+      expect(result.issues[0]?.code).toMatch(/^L2TP_/);
+      expect(result.issues[0]?.severity).toBe("error");
+    }
   });
 
   test("OpenVPN kit capabilities flag multi-instance + server PKI", () => {
@@ -151,6 +192,8 @@ describe("core registry", () => {
     expect(typeof wireguard.generateWireGuardKeyPair).toBe("function");
     expect(typeof singbox.createDefaultSingBoxCoreDraft).toBe("function");
     expect(typeof openvpn.createDefaultOpenVPNCoreDraft).toBe("function");
+    expect(typeof mtproto.createDefaultMTProtoCoreDraft).toBe("function");
+    expect(typeof l2tp.createDefaultL2TPCoreDraft).toBe("function");
   });
 });
 
