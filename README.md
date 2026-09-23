@@ -54,8 +54,12 @@ bun run build
 bun test
 ```
 
-`dist/` is committed so the package installs from git without a toolchain; rebuild it with
-`bun run build` whenever `src/` changes.
+A standalone install from a git URL does not work, because the sibling kits are `file:`
+dependencies that only resolve when those directories sit next to this one. Consumers such as
+the panel clone every kit side by side at pinned commits and run `bun install` in each.
+
+`dist/` is committed, so a consumer that clones the kits side by side does not need to build
+this one; rebuild it with `bun run build` whenever `src/` changes.
 
 ## Supported Core Kinds
 
