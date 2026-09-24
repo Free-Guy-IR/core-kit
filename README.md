@@ -48,7 +48,7 @@ core-kit/
 ```
 
 ```bash
-bun install
+bun install --frozen-lockfile
 bun run typecheck
 bun run build
 bun test
@@ -56,7 +56,13 @@ bun test
 
 A standalone install from a git URL does not work, because the sibling kits are `file:`
 dependencies that only resolve when those directories sit next to this one. Consumers such as
-the panel clone every kit side by side at pinned commits and run `bun install` in each.
+the panel clone every kit side by side at pinned commits and run `bun install --frozen-lockfile`
+in each.
+
+`bun.lock` is committed and was resolved beside the sibling kits at the commits CI pins. It locks
+every registry package, including the ones the sibling kits pull in. When a sibling kit's
+`package.json` or this one changes, run `bun install` beside the pinned siblings and commit the
+updated lockfile; a frozen install fails until then.
 
 `dist/` is committed, so a consumer that clones the kits side by side does not need to build
 this one; rebuild it with `bun run build` whenever `src/` changes.
