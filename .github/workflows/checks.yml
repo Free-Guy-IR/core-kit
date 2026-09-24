@@ -5,13 +5,14 @@ on:
     branches: ["main"]
   pull_request:
     branches: ["main"]
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   test:
-    name: Typecheck, Build, Test
+    name: Typecheck, Build, Dist, Test
     runs-on: ubuntu-latest
 
     steps:
@@ -39,7 +40,7 @@ jobs:
               fi
           done
           for entry in $KITS; do
-              (cd "$GITHUB_WORKSPACE/../${entry%%@*}" && bun install)
+              (cd "$GITHUB_WORKSPACE/../${entry%%@*}" && bun install --frozen-lockfile)
           done
 
       - name: Install dependencies
@@ -50,6 +51,14 @@ jobs:
 
       - name: Build
         run: bun run build
+
+      - name: Check committed dist matches a clean build
+        run: |
+          rm -rf dist
+          bun run build
+          git status --porcelain --untracked-files=all -- dist
+          git diff --exit-code -- dist
+          test -z "$(git status --porcelain --untracked-files=all -- dist)"
 
       - name: Test
         run: bun run test
