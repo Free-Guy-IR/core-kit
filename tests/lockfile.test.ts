@@ -48,6 +48,18 @@ describe("bun.lock", () => {
     }
   });
 
+  test("records the dependencies each sibling kit declares today", async () => {
+    const lock = await loadLock();
+    const siblings = Object.entries(manifest.dependencies).filter(([, spec]) => spec.startsWith("file:../"));
+    for (const [name, spec] of siblings) {
+      const sibling = JSON.parse(readFileSync(join(root, spec.slice("file:".length), "package.json"), "utf8")) as {
+        dependencies?: Record<string, string>;
+      };
+      const recorded = lock.packages[name]?.[1] as { dependencies?: Record<string, string> } | undefined;
+      expect({ [name]: recorded?.dependencies ?? {} }).toEqual({ [name]: sibling.dependencies ?? {} });
+    }
+  });
+
   test("pins every registry dependency to one exact version", async () => {
     const lock = await loadLock();
     const registry = Object.entries(manifest.dependencies).filter(([, spec]) => !spec.startsWith("file:"));
