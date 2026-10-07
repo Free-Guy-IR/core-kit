@@ -60,11 +60,12 @@ the panel clone every kit side by side at pinned commits and run `bun install --
 in each.
 
 `bun.lock` is committed and was resolved beside the sibling kits at the commits CI pins. It locks
-every registry package, including the ones the sibling kits pull in. When this `package.json`
-changes, a frozen install fails until the lockfile is updated. A frozen install does not notice a
-sibling kit's new dependencies, so `tests/lockfile.test.ts` compares them with the lockfile and
-fails instead. In both cases run `bun install` beside the pinned siblings and commit the updated
-lockfile.
+every registry package, including the ones the sibling kits pull in. A frozen install fails when
+`package.json` gains a dependency or changes an exact pin, but it still passes after a version
+range is edited or a dependency is removed, and it never notices a sibling kit's new
+dependencies. `tests/lockfile.test.ts` compares `package.json` and the dependencies of every
+sibling kit with the lockfile and fails on any difference. When either check fails, run
+`bun install` beside the pinned siblings and commit the updated lockfile.
 
 `dist/` is committed, so a consumer that clones the kits side by side does not need to build
 this one; rebuild it with `bun run build` whenever `src/` changes.
