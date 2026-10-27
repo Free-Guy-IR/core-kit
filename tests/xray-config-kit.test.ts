@@ -26,6 +26,23 @@ const masqueConfig = {
   outbounds: [{ protocol: "freedom", tag: "direct" }]
 };
 
+const finalmaskFilterConfig = {
+  inbounds: [
+    {
+      protocol: "vless",
+      tag: "vless-filter",
+      port: 443,
+      settings: { clients: [], decryption: "none" },
+      streamSettings: {
+        network: "tcp",
+        security: "none",
+        finalmask: { tcp: [{ type: "filter", settings: { blockedSourceIPs: ["192.0.2.0/24", "geoip:private"] } }] }
+      }
+    }
+  ],
+  outbounds: [{ protocol: "freedom", tag: "direct" }]
+};
+
 function expectValidFor(xrayVersion: string, input: unknown) {
   const result = validateCoreConfig("xray", input, { xrayVersion });
   expect({ xrayVersion, issues: result.issues }).toEqual({ xrayVersion, issues: [] });
@@ -53,5 +70,15 @@ describe("xray-config-kit through the facade", () => {
     expect(xraySubpath.MASQUE_DEFAULTS.path).toBe("/.well-known/masque/ip/*/*/");
     expect(xray.expandMasquePathTemplate("/.well-known/masque/ip/{target}/{ipproto}/")).toBe("/.well-known/masque/ip/*/*/");
     expect(xray.XDRIVE_SERVICES).toContain("google-drive");
+  });
+
+  test("validates Xray v26.10.21 and its finalmask filter only from that release", () => {
+    expect(releaseTags()).toContain("v26.10.21");
+    expectValidFor("26.10.21", createCoreConfigTemplate("xray").configJson);
+    expectValidFor("26.10.21", finalmaskFilterConfig);
+
+    const before = validateCoreConfig("xray", finalmaskFilterConfig, { xrayVersion: "26.10.17" });
+    expect(before.ok).toBe(false);
+    expect(before.issues.map((issue) => issue.code)).toContain("XCK_XRAY_STRICT_UNKNOWN_FINALMASK");
   });
 });
